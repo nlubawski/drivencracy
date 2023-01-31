@@ -1,19 +1,10 @@
 import express from "express";
 import dotenv from 'dotenv'
 import cors from 'cors'
-import { MongoClient } from "mongodb";
+import db from './database/db.js';
+
 
 dotenv.config()
-const mongoClient = new MongoClient(process.env.DATABASE_URL);
-let db;
-
-try {
-  await mongoClient.connect()
-  db = mongoClient.db()
-  console.log("deu bom")
-} catch (error) {
-  console.error(error)
-}
 
 const app = express()
 app.use(cors())
