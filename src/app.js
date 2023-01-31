@@ -19,6 +19,18 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+app.post('/poll', async(req,res)=>{
+  const {title, expireAt} = req.body
+  try {
+    await db.collection('pools').insertOne({title,expireAt})
+    return res.sendStatus(201)
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+})
+
+
+
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, ()=>{
