@@ -2,10 +2,9 @@ import {pollSchema} from '../schema/poll.schema.js'
 
 export function pollValidation(req, res, next){
   const poll = req.body
-  const  {title, expireAt} = poll
+  const  {title} = poll
   const { error } = pollSchema.validate({
-    title,
-    expireAt
+    title
   }, { abortEarly: false });
   if (error)
     return res
