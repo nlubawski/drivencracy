@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import db from './../database/db.js';
 import { choiceSchema } from '../schema/choice.schema.js';
+import dayjs from 'dayjs';
 
 export async function postChoice(req, res) {
   const { title, pollId } = req.body
@@ -16,12 +17,15 @@ export async function postChoice(req, res) {
     const poll = await db.collection('polls').findOne({ _id: ObjectId(pollId) })
     if (!poll) return res.sendStatus(404)
 
-
+    const expired = dayjs().isAfter(poll.expireAt, 'days');
+    if (expired) return res.sendStatus(403)
+    
     const titlePoll = await db.collection('choices').findOne({ title })
     if (titlePoll) return res.sendStatus(409)
     await db.collection('choices').insertOne({
       title,
-      pollId: pollId    })
+      pollId: pollId
+    })
     res.sendStatus(201)
   } catch (error) {
     return res.sendStatus(500)
