@@ -22,11 +22,10 @@ export async function postChoice(req, res) {
     
     const titlePoll = await db.collection('choices').findOne({ title })
     if (titlePoll) return res.sendStatus(409)
-    await db.collection('choices').insertOne({
-      title,
-      pollId: pollId
-    })
-    res.sendStatus(201)
+
+    const choice = {title, pollId}
+    await db.collection('choices').insertOne(choice)
+    res.status(201).send(choice)
   } catch (error) {
     return res.sendStatus(500)
   }
