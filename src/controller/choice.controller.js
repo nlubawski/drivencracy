@@ -21,8 +21,7 @@ export async function postChoice(req, res) {
     if (titlePoll) return res.sendStatus(409)
     await db.collection('choices').insertOne({
       title,
-      pollId: ObjectId(pollId)
-    })
+      pollId: pollId    })
     res.sendStatus(201)
   } catch (error) {
     return res.sendStatus(500)
