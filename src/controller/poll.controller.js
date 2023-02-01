@@ -23,7 +23,7 @@ export async function getPollById(req,res){
   const {id} = req.params
   try { 
     const choices = await db.collection('choices').find({pollId: id}).toArray()
-    console.log(choices)
+    if(choices.length === 0) return res.sendStatus(404)
     return res.send(choices)
     } catch (error) {
     return res.sendStatus(500)
