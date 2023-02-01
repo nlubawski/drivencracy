@@ -18,3 +18,14 @@ export async function getPoll(req,res){
     return res.sendStatus(500)
   }
 }
+
+export async function getPollById(req,res){
+  const {id} = req.params
+  try {
+    const choices = await db.collection('choices').find({pollId: id}).toArray()
+    console.log(choices)
+    return res.send(choices)
+    } catch (error) {
+    return res.sendStatus(500)
+  } 
+}
