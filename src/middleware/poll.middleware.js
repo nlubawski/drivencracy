@@ -1,8 +1,8 @@
-import {pollSchema} from './../schema/poll.schema.js'
+import {pollSchema} from '../schema/poll.schema.js'
 
 export function pollValidation(req, res, next){
-  const pool = req.body
-  const  {title, expireAt} = pool
+  const poll = req.body
+  const  {title, expireAt} = poll
   const { error } = pollSchema.validate({
     title,
     expireAt
@@ -11,7 +11,7 @@ export function pollValidation(req, res, next){
     return res
       .status(422)
       .send(error.details.map((detail) => detail.message));
-  res.locals.pool = pool
+  res.locals.poll = poll
   next()
 }
   

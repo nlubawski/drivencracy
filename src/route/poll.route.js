@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { getPoll, postPoll, getPollById} from "../controller/poll.controller.js";
-import { pollValidation } from "../middleware/pool.middleware.js";
+import { pollValidation } from "../middleware/poll.middleware.js";
 
-const pool = Router()
+const poll = Router()
 
-pool.post('/poll', pollValidation, postPoll )
-pool.get('/poll', getPoll)
-pool.get('/poll/:id/choice', getPollById)
+poll.post('/poll', pollValidation, postPoll )
+poll.get('/poll', getPoll)
+poll.get('/poll/:id/choice', getPollById)
 
-export default pool
+export default poll
