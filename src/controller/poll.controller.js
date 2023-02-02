@@ -24,8 +24,7 @@ export async function getPollById(req, res) {
   const { id } = req.params
   try {
     const poll = await db.collection('polls').findOne({ _id: ObjectId(id) })
-     console.log(poll)
-     if(!poll) return res.sendStatus(404)
+    if(!poll) return res.sendStatus(404)
     const choices = await db.collection('choices').find({ pollId: id }).toArray()
     return res.send(choices)
   } catch (error) {
@@ -43,7 +42,7 @@ export async function getResultPollById(req, res) {
     if (!poll) return res.sendStatus(404)
 
     choices = await db.collection('choices').find({ pollId: id }).toArray()
-    if (choices.length === 0) return res.sendStatus(404)
+    if (choices.length === 0) return res.send([])
 
     for (const choice of choices) {
       const votes = await db.collection('votes').find({ choiceId: choice._id.toString() }).toArray()
@@ -65,7 +64,6 @@ export async function getResultPollById(req, res) {
     }
     return res.send(result)
   } catch (error) {
-    console.log("aqui no erro")
     return res.sendStatus(500)
   }
 }

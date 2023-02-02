@@ -8,9 +8,9 @@ let db;
 try {
   await mongoClient.connect()
   db = mongoClient.db()
-  console.log("deu bom")
+  console.log("Connect to database")
 } catch (error) {
-  console.error(error)
+  console.log(error)
 }
 
 export default db
