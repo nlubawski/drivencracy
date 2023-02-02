@@ -23,8 +23,10 @@ export async function getPoll(req, res) {
 export async function getPollById(req, res) {
   const { id } = req.params
   try {
+    const poll = await db.collection('polls').findOne({ _id: ObjectId(id) })
+     console.log(poll)
+     if(!poll) return res.sendStatus(404)
     const choices = await db.collection('choices').find({ pollId: id }).toArray()
-    if (choices.length === 0) return res.sendStatus(404)
     return res.send(choices)
   } catch (error) {
     return res.sendStatus(500)
