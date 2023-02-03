@@ -37,17 +37,18 @@ export async function getResultPollById(req, res) {
   try {
     choices = await db.collection('choices').find({ pollId: id }).toArray()
     if (choices.length === 0) return res.send([])
+    
     for (const choice of choices) {
       const votes = await db.collection('votes').find({ choiceId: choice._id.toString() }).toArray()
       if (votes.length > 0) {
         ranking.push({ title: choice.title, votes: votes.length })
       }
-    }
+    } 
     ranking.sort((a, b) => b.votes > a.votes)
     const result = {
-      _id: poll[0]._id.toString(),
-      title: poll[0].title,
-      expireAt: poll[0].expireAt,
+      _id: poll._id.toString(),
+      title: poll.title,
+      expireAt: poll.expireAt,
       result: {
         title: ranking[0].title,
         votes: ranking[0].votes
