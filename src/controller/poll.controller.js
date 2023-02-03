@@ -20,7 +20,7 @@ export async function getPoll(req, res) {
 }
 
 export async function getPollById(req, res) {
-  const id = user.locals.id
+  const id = res.locals.id
   try {
     const choices = await db.collection('choices').find({ pollId: id }).toArray()
     return res.send(choices)
@@ -30,8 +30,8 @@ export async function getPollById(req, res) {
 }
 
 export async function getResultPollById(req, res) {
-  const id = user.locals.id
-  const poll = user.locals.hasPoll
+  const id = res.locals.id
+  const poll = res.locals.hasPoll
   const ranking = []
   let choices;
   try {
