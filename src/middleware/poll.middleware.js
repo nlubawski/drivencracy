@@ -1,5 +1,7 @@
 import { pollSchema } from '../schema/poll.schema.js'
 import dayjs from "dayjs";
+import db from './../database/db.js';
+import { ObjectId } from 'mongodb';
 
 export function pollValidation(req, res, next) {
   let { title, expireAt } = req.body

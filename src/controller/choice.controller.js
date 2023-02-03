@@ -2,8 +2,9 @@ import db from './../database/db.js';
 import dayjs from 'dayjs';
 
 export async function postChoice(req, res) {
-  try {
-    const { title, pollId } = user.locals.choice
+  const title = res.locals.title
+  const pollId = res.locals.pollId
+  try {    
     const choice = { title, pollId }
     await db.collection('choices').insertOne(choice)
     res.status(201).send(choice)
@@ -14,7 +15,7 @@ export async function postChoice(req, res) {
 
 export async function postChoiceById(req, res) {
   try {
-    const choiceId = user.locals.choiceId
+    const choiceId = res.locals.choiceId
     await db.collection("votes").insertOne({ choiceId, createdAt: dayjs().format('YYYY-MM-DD HH:mm') })
     return res.sendStatus(201)
   } catch (error) {

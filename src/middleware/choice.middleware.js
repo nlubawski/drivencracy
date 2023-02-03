@@ -1,5 +1,7 @@
 import { choiceSchema } from '../schema/choice.schema.js'
 import dayjs from "dayjs";
+import db from './../database/db.js';
+import { ObjectId } from 'mongodb';
 
 export async function choiceValidation(req, res, next) {
   const { title, pollId } = req.body
@@ -23,7 +25,8 @@ export async function choiceValidation(req, res, next) {
   } catch (error) {
     return res.sendStatus(500)
   }
-  res.locals.choice = { title, pollId }
+  res.locals.title = title
+  res.locals.pollId = pollId
   next()
 }
 
