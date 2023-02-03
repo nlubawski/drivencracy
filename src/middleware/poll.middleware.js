@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 
 export function pollValidation(req, res, next) {
   let { title, expireAt } = req.body
+  if(typeof expireAt === 'undefined') return res.sendStatus(422)
   const { error } = pollSchema.validate({
     title
   }, { abortEarly: false });
