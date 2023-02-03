@@ -28,7 +28,7 @@ export async function choiceValidation(req, res, next) {
 }
 
 export async function choiceByIdValidation(req, res, next) {
-    const choiceId  = req.params.id
+  const choiceId = req.params.id
   try {
     const choice = await db.collection('choices').findOne({ _id: ObjectId(choiceId) })
     if (!choice) return res.sendStatus(404)
@@ -41,4 +41,6 @@ export async function choiceByIdValidation(req, res, next) {
   } catch (error) {
     return res.sendStatus(500)
   }
+  res.locals.choiceId = choiceId
+  next()
 }

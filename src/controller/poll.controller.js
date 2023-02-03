@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import db from './../database/db.js';
 
 export async function postPoll(req, res) {
@@ -21,10 +20,8 @@ export async function getPoll(req, res) {
 }
 
 export async function getPollById(req, res) {
-  const { id } = req.params
+  const id = user.locals.id
   try {
-    const poll = await db.collection('polls').findOne({ _id: ObjectId(id) })
-    if(!poll) return res.sendStatus(404)
     const choices = await db.collection('choices').find({ pollId: id }).toArray()
     return res.send(choices)
   } catch (error) {
@@ -33,26 +30,20 @@ export async function getPollById(req, res) {
 }
 
 export async function getResultPollById(req, res) {
-  const { id } = req.params
-  let choices;
-  let poll;
+  const id = user.locals.id
+  const poll = user.locals.hasPoll
   const ranking = []
+  let choices;
   try {
-    poll = await db.collection('polls').find({ _id: ObjectId(id) }).toArray()
-    if (!poll) return res.sendStatus(404)
-
     choices = await db.collection('choices').find({ pollId: id }).toArray()
     if (choices.length === 0) return res.send([])
-
     for (const choice of choices) {
       const votes = await db.collection('votes').find({ choiceId: choice._id.toString() }).toArray()
       if (votes.length > 0) {
         ranking.push({ title: choice.title, votes: votes.length })
       }
     }
-
     ranking.sort((a, b) => b.votes > a.votes)
-
     const result = {
       _id: poll[0]._id.toString(),
       title: poll[0].title,
